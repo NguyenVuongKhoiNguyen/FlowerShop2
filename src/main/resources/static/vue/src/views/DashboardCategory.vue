@@ -130,7 +130,7 @@ import {
   updateCategory,
   deleteCategory,
   getAllPaginatedAndFilteredCategories
-} from '../api/categoryService';
+} from '../services/categoryService';
 
 const errorMsg = ref(null);
 const categoryId = ref(null);

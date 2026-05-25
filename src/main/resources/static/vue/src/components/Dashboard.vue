@@ -1,25 +1,25 @@
 <template>
   <div class="d-flex">
-
+    
     <!-- Sidebar -->
     <div class="bg-dark text-white p-3" style="width: 250px; min-height: 100vh;">
       <ul class="nav flex-column">
-        <li class="nav-item" v-if="isLogin && isAdmin">
+        <li class="nav-item" v-if="auth.isAuthenticated && auth.isAdmin">
           <router-link class="nav-link text-white" to="/dashboard/account">
             👤 Tài khoản
           </router-link>
         </li>
-        <li class="nav-item" v-if="isLogin && isAdmin">
+        <li class="nav-item" v-if="auth.isAuthenticated && auth.isAdmin">
           <router-link class="nav-link text-white" to="/dashboard/product">
             📦 Sản phẩm
           </router-link>
         </li>
-        <li class="nav-item" v-if="isLogin && isAdmin">
+        <li class="nav-item" v-if="auth.isAuthenticated && auth.isAdmin">
           <router-link class="nav-link text-white" to="/dashboard/category">
             🗂 Loại sản phẩm
           </router-link>
         </li>
-        <li class="nav-item" v-if="isLogin && (isAdmin || isManager)">
+        <li class="nav-item" v-if="auth.isAuthenticated && (auth.isAdmin || auth.isManager)">
           <router-link class="nav-link text-white" to="/dashboard/order">
             🧾 Đơn hàng
           </router-link>
@@ -37,12 +37,5 @@
 
 <script setup>
   import { useAuthStore } from "../stores/auth";
-  import { computed } from "vue";
-
   const auth = useAuthStore();
-
-  const isLogin = computed(() => !!auth.token);
-  const isAdmin = computed(() => auth.isAdmin());
-  const isManager = computed(() => auth.isManager());
-
 </script>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api from "../api/axiosConfig";
+import api from "../services/axiosConfig";
 import { jwtDecode } from "jwt-decode";
 
 export const useAuthStore = defineStore("auth", {
@@ -9,29 +9,47 @@ export const useAuthStore = defineStore("auth", {
         roles: []
     }),
 
+    getters:  {
+        isAdmin: (state) => state.roles.includes("ROLE_ADMIN"),
+        isManager: (state) => state.roles.includes("ROLE_MANAGER"),
+        isUser: (state) => state.roles.includes("ROLE_USER"),
+        isAuthenticated: (state) => {
+            if (!state.token) return false;
+            try {
+                const { exp } = jwtDecode(state.token);
+                return exp * 1000 > Date.now(); // token not expired
+            } catch {
+                return false;
+            }
+        }
+    },
+
     actions: {
-        async login(username, password) {
-            const res = await api.post("/auth/login", {
-                username,
-                password
-            });
 
-            this.token = res.data.token;
-
-            // decode token
-            const decoded = jwtDecode(this.token);
-
+        _setSession(token) {
+            const decoded = jwtDecode(token);
+            this.token = token;
             this.user = decoded.sub;
             this.roles = decoded.roles || [];
+        },
+        
+        async login(username, password) {
+            try {
+                const res = await api.post("/auth/login", {
+                    username,
+                    password
+                });
+                this._setSession(res.data.token);
+            } catch (error) {
+                console.log(error)
+            }
         },
 
         async loginWithGoogle(googleToken) {
             const res = await api.post("/auth/google", { token: googleToken });
-            this.token = res.data.token;
-
-            const decoded = jwtDecode(this.token);
-            this.user = decoded.sub;
-            this.roles = ["ROLE_USER"];
+            this._setSession(res.data.token);
+            if (!this.roles.length) this.roles = ["ROLE_USER"] ;
+            
         },
 
         logout() {
@@ -41,23 +59,40 @@ export const useAuthStore = defineStore("auth", {
         },
 
         initialize() {
-            if (this.token) {
+            if (!this.token) return;
+
+            //check expired
+            try {
                 const decoded = jwtDecode(this.token);
-                this.user = decoded.sub;
-                this.roles = decoded.roles || [];
+                //decoded.exp is in second so multiply it by 1000 times to convert it back to milisecond like Date.now()
+                //decoded.exp is the expired time set in java
+                //decoded.exp is a fix point in time not a count down
+                const isExpired = (decoded.exp * 1000) < Date.now();
+                if (isExpired) {
+                    logout();
+                } else {
+                    this.user = decoded.sub;
+                    this.roles = decoded.roles;
+                }
+            } catch (error) {
+                logout();
             }
-        },
 
-        isAdmin() {
-            return this.roles.includes("ROLE_ADMIN");
-        },
-
-        isManager() {
-            return this.roles.includes("ROLE_MANAGER");
-        },
-
-        isUser() {
-            return this.roles.includes("ROLE_USER");
+            //check session change
+             window.addEventListener("storage", (event) => {
+                if (event.key === "auth") {
+                    if (!event.newValue) {
+                        // another tab logged out
+                        this.logout();
+                    } else {
+                        // another tab logged in with a different account
+                        const { token, user, roles } = JSON.parse(event.newValue);
+                        this.token = token;
+                        this.user = user;
+                        this.roles = roles;
+                    }
+                }
+            });
         }
     },
 

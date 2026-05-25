@@ -34,8 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //Skip public endpoints
         if (path.startsWith("/images/") ||
-        	path.startsWith("/auth/")	||
-            path.startsWith("/api/auth/") ||
+        	path.startsWith("/login/") ||
             path.startsWith("/products/") ||
             path.startsWith("/categories/") || 
             path.startsWith("/ws/")
@@ -55,11 +54,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 String username = jwtUtil.extractUsername(token);
                 List<String> roles = jwtUtil.extractRoles(token);
-                System.out.println("Roles from token: " + roles);
 
                 //convert roles into authorities
                 var authorities = roles.stream()
-                        .map(SimpleGrantedAuthority::new)
+                		.map(SimpleGrantedAuthority::new) //.map(r -> new SimpleGrantedAuthority(r))
                         .collect(Collectors.toList());
 
                 UsernamePasswordAuthenticationToken auth =

@@ -85,7 +85,7 @@
 <script setup>
     import { onMounted, ref, watch } from "vue";
     import { useAuthStore } from "../stores/auth";
-    import { getAllPaginatedAndFilteredOrders } from "../api/orderService";
+    import { getAllPaginatedAndFilteredOrders } from "../services/orderService";
 
     const authStore = useAuthStore();
 

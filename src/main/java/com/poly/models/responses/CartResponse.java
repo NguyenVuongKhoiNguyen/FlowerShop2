@@ -10,6 +10,7 @@ public class CartResponse {
     private Long id;
     private LocalDate createDate;
     private String username;
+    private String fullname;
     private Double total;
-    private List<ItemResponse> items;
+    private List<ItemResponse> itemResponses;
 }

@@ -25,10 +25,15 @@ public class ImageUtil {
             throw new RuntimeException("Invalid file type");
         }
         
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || 
+                !(originalFilename.toLowerCase().endsWith(".jpg") ||
+                  originalFilename.toLowerCase().endsWith(".jpeg") ||
+                  originalFilename.toLowerCase().endsWith(".png"))) {
+            throw new IllegalArgumentException("Only JPG and PNG files are allowed");
+        }
+        
         try {
-            // Get original filename
-            String originalFilename = file.getOriginalFilename();
-
             // Extract extension (e.g. .jpg, .png)
             String extension = "";
             if (originalFilename != null && originalFilename.contains(".")) {

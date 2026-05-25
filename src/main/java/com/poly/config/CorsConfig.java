@@ -17,7 +17,6 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of("http://localhost:5173")); 
-        // Vue dev server
 
         config.setAllowedMethods(List.of(
                 "GET",
@@ -31,8 +30,7 @@ public class CorsConfig {
 
         config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration("/**", config);
 

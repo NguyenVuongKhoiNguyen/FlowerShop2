@@ -18,5 +18,5 @@ public class AccountRequest {
     private String phone;
     private String address;
     private Boolean activated;
-    private List<RoleRequest> roles;
+    private List<RoleRequest> roleRequests;
 }

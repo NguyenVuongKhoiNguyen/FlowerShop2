@@ -1,10 +1,11 @@
 package com.poly.models.compositekeys;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,12 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@Builder
 @Embeddable
 public class AccountRoleId implements Serializable {
-	
-    private static final long serialVersionUID = 1L; //add this so java doesn't complain
-    
+
+	@Serial
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private Integer roleId;
 }

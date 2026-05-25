@@ -2,6 +2,8 @@ package com.poly.models.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,41 +13,34 @@ import com.poly.models.entities.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+	
 	@Query(value = """
-	        EXEC sp_FilteredPaginatedProducts
-	            @MinPrice = :minPrice,
-	            @MaxPrice = :maxPrice,
-	            @CategoryId = :categoryId,
-	            @ProductName = :productName,
-	            @Available = :available,
-	            @SortOrder = :sortOrder,
-	            @Page = :page,
-	            @PageSize = :pageSize
-	        """, nativeQuery = true)
-    List<Product> filteredPaginated(
-            @Param("minPrice") Double minPrice,
-            @Param("maxPrice") Double maxPrice,
-            @Param("categoryId") Integer categoryId,
+        SELECT Id, Name, Image, CostPrice, RetailPercentage, CreateDate, Available, Amount, Sales, CategoryId
+        FROM Products
+        WHERE
+            (:minPrice IS NULL OR CostPrice >= :minPrice)
+            AND (:maxPrice IS NULL OR CostPrice <= :maxPrice)
+            AND (:categoryId IS NULL OR CategoryId = :categoryId)
+            AND (:productName IS NULL OR Name LIKE '%' + :productName + '%')
+            AND (:available IS NULL OR Available = :available)
+        """,
+        countQuery = """
+        SELECT COUNT(*) FROM Products
+        WHERE
+            (:minPrice IS NULL OR CostPrice >= :minPrice)
+            AND (:maxPrice IS NULL OR CostPrice <= :maxPrice)
+            AND (:categoryId IS NULL OR CategoryId = :categoryId)
+            AND (:productName IS NULL OR Name LIKE '%' + :productName + '%')
+            AND (:available IS NULL OR Available = :available)
+        """,
+        nativeQuery = true)
+    Page<Product> filterProducts(
+            @Param("minPrice")    Double minPrice,
+            @Param("maxPrice")    Double maxPrice,
+            @Param("categoryId")  Integer categoryId,
             @Param("productName") String productName,
-            @Param("available") Boolean available,
-            @Param("sortOrder") String sortOrder,
-            @Param("page") Integer page,
-            @Param("pageSize") Integer pageSize
-    );
-	@Query(value = """
-	        EXEC sp_CountFilteredProducts
-	            @MinPrice = :minPrice,
-	            @MaxPrice = :maxPrice,
-	            @CategoryId = :categoryId,
-	            @ProductName = :productName,
-	            @Available = :available
-	        """, nativeQuery = true)
-    Long countFiltered(
-            @Param("minPrice") Double minPrice,
-            @Param("maxPrice") Double maxPrice,
-            @Param("categoryId") Integer categoryId,
-            @Param("productName") String productName,
-            @Param("available") Boolean available
+            @Param("available")   Boolean available,
+            Pageable pageable
     );
 	
 	List<Product> findTop8ByAvailableTrueOrderBySalesDesc();

@@ -217,8 +217,8 @@
   import Product from '../models/Product';
   import { Tab } from 'bootstrap';
   import { onMounted, reactive, ref, watch } from 'vue';
-  import { createProduct, deleteProduct, getAllPaginatedAndFilteredProducts, getTotalProductPages, updateProduct } from '../api/productService';
-  import { getAllPaginatedAndFilteredCategories } from '../api/categoryService'
+  import { createProduct, deleteProduct, getAllPaginatedAndFilteredProducts, getTotalProductPages, updateProduct } from '../services/productService';
+  import { getAllPaginatedAndFilteredCategories } from '../services/categoryService'
 
   const errorMsg = ref(null);
   const selectedFile = ref(null);

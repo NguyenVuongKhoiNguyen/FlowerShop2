@@ -11,5 +11,5 @@ public class OrderRequest {
     private String phone;
     private String address;
     private String status;
-    private List<OrderDetailRequest> orderDetails;  
+    private List<OrderDetailRequest> orderDetailRequests;  
 }

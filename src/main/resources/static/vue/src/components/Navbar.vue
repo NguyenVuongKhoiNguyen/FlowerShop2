@@ -18,13 +18,13 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-                    <li class="nav-item" v-if="!isLogin">
+                    <li class="nav-item" v-if="!auth.isAuthenticated">
                         <router-link class="nav-link" to="/login">Đăng nhập</router-link>
                     </li>
                     <!-- <li class="nav-item" v-if="!isLogin">
                         <router-link class="btn btn-outline-light btn-sm ms-2"  to="/register">Đăng ký</router-link>
                     </li> -->
-                    <li class="nav-item dropdown" v-if="isLogin && isUser">
+                    <li class="nav-item dropdown" v-if="auth.isLogin && auth.isUser">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img :src="getImageUrl(photo)" style="width:32px; height:32px; object-fit:cover; border-radius:50%;" />
                             {{ fullname || "No User" }}
@@ -37,7 +37,7 @@
                             <li><a class="dropdown-item text-danger" @click="logout">Đăng xuất</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item" v-if="isLogin && (isAdmin || isManager)">
+                    <li class="nav-item" v-if="auth.isAuthenticated && (auth.isAdmin || auth.isManager)">
                         <router-link class="btn btn-outline-light btn-sm ms-2"  to="/dashboard/order">Quản lý</router-link>
                     </li>
                 </ul>
@@ -55,25 +55,20 @@
     import { useCartStore } from '../stores/cart';
     import { useAuthStore } from "../stores/auth";
     import { useRouter } from "vue-router";
-    import { computed, onMounted, ref, watch } from 'vue';
+    import { ref, watch } from 'vue';
     import { getAccountByUsername } from '../api/accountService';
 
     const cart = useCartStore();
     const auth = useAuthStore();
     const router = useRouter();
 
-    const isLogin = computed(() => !!auth.token);
-    const isAdmin = computed(() => auth.isAdmin());
-    const isManager = computed(() => auth.isManager());
-    const isUser = computed(() => auth.isUser());
-
     const fullname = ref("No User");
-    const photo = ref(null);
+    const photo = ref("avatar.jpg");
 
     const BASE_URL = import.meta.env.VITE_API_URL;
     const getImageUrl = (img) => img ? `${BASE_URL}/images/${img}` : '${BASE_URL}/images/avatar.jpg';
     
-    const fillFullname = async (username) => {
+    const setFullnameAndPhoto = async (username) => {
         try {
             const request = await getAccountByUsername(username);
             const account = request.data;
@@ -84,24 +79,25 @@
             fullname.value = "No User";
         }
     };
-    
+
     // logout
     const logout = () => {
         auth.logout();
         router.push("/");
     };
 
+    watch(() => auth.token, () => {
+
+        auth.initialize();
+
+    }, {immediate: true});
+
     watch(() => auth.user, (newUser) => {
         if (newUser) {
-            fillFullname(newUser);
+            setFullnameAndPhoto(newUser);
         } else {
             fullname.value = "No User";
+            photo.value = "Avatar.jpg";
         }
-    });
-
-    onMounted(() => {
-        if (auth.user) {
-            fillFullname(auth.user);
-        }
-    });
+    }, {immediate: true});
 </script>

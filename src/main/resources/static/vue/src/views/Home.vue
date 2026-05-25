@@ -75,7 +75,7 @@
 
 <script setup>
     import { onMounted, ref } from 'vue';
-    import { getRandomProducts, getProductsWithTopSales, getProductById } from '../api/productService';
+    import { getRandomProducts, getProductsWithTopSales, getProductById } from '../services/productService';
     import { useCartStore } from '../stores/cart'
     import { useRouter } from 'vue-router';
 

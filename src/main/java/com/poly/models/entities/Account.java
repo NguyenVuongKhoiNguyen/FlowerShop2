@@ -18,6 +18,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name="Accounts")
 public class Account {
@@ -57,13 +59,16 @@ public class Account {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(insertable = false, updatable = false)
     private LocalDate createDate;
-
+    
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<AccountRole> accountRoles = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Cart> carts = new ArrayList<>();
 

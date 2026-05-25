@@ -65,8 +65,8 @@
 <script setup>
   import { useCartStore } from '../stores/cart';
   import { onMounted, watch, ref } from 'vue';
-  import { getProductById } from '../api/productService';
-  import { createCart, updateCart } from '../api/cartService';
+  import { getProductById } from '../services/productService';
+  import { createCart, updateCart } from '../services/cartService';
   import { useAuthStore } from '../stores/auth';
   import { useRouter } from 'vue-router';
   import Cart from '../models/Cart';

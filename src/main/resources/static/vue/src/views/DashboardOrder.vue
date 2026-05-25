@@ -221,7 +221,7 @@
 <script setup>
 import { reactive, ref, watch, onMounted } from 'vue';
 import { Tab } from 'bootstrap';
-import { getAllPaginatedAndFilteredOrders, updateOrder } from '../api/orderService';
+import { getAllPaginatedAndFilteredOrders, updateOrder } from '../services/orderService';
 
 const statuses = ['PENDING', 'PAID', 'CONFIRM', 'PROCESSING', 'SHIPPING', 'DELIVERED', 'CANCELLED', 'REFUND'];
 

@@ -1,4 +1,4 @@
-package com.poly.models.services;
+package com.poly.models.services.impl;
 
 import java.util.Collections;
 
@@ -14,7 +14,7 @@ public class GoogleAuthService {
     private static final String CLIENT_ID = "731452883233-bq07lic61901bk473t4ls6kkeimdtade.apps.googleusercontent.com";
 
     public GoogleIdToken.Payload verify(String idTokenString) throws Exception {
-        GsonFactory gsonFactory = GsonFactory.getDefaultInstance(); // ✅
+        GsonFactory gsonFactory = GsonFactory.getDefaultInstance();
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(), gsonFactory)

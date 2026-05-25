@@ -218,8 +218,8 @@
     import Account from '../models/Account'
     import { reactive, ref, onMounted, watch } from 'vue';
     import { Tab } from 'bootstrap';
-    import { createAccount, deleteAccount, getAllPaginatedAndFilteredAccounts, updateAccount, getAccountTotalPages} from '../api/accountService';
-    import { getAllRoles } from '../api/roleService';
+    import { createAccount, deleteAccount, getAllPaginatedAndFilteredAccounts, updateAccount, getAccountTotalPages} from '../services/accountService';
+    import { getAllRoles } from '../services/roleService';
 
     const fileInput = ref(null);
     const username = ref(null)

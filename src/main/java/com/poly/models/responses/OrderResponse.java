@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 public class OrderResponse {
     private Long id;
@@ -15,5 +17,5 @@ public class OrderResponse {
     private String address;
     private String status;
     private Double total;
-    private List<OrderDetailResponse> orderDetails;
+    private List<OrderDetailResponse> orderDetailResponses;
 }

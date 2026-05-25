@@ -35,7 +35,7 @@ public class Product {
 
     private String name;
 
-    private String image = "avatar.png";
+    private String image;
 
     private Double costPrice; 
 
@@ -49,7 +49,7 @@ public class Product {
 
     private Boolean available = false;
     
-    private Long sales = (long) 0;
+    private long sales =  0;
     
     @ManyToOne
     @JoinColumn(name = "CategoryId")

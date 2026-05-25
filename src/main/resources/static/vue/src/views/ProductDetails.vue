@@ -145,10 +145,10 @@
 <script setup>
     import { ref, onMounted, computed } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
-    import { getProductById } from '../api/productService';
-    import { getCategoryById } from '../api/categoryService';
+    import { getProductById } from '../services/productService';
+    import { getCategoryById } from '../services/categoryService';
     import { useCartStore } from "../stores/cart";
-    import { getProductComments, getCommentReplies, createComment, createReply, deleteComment, deleteReply } from '../api/commentService';
+    import { getProductComments, getCommentReplies, createComment, createReply, deleteComment, deleteReply } from '../services/commentService';
     import { useAuthStore } from '../stores/auth';
 
     const route = useRoute();

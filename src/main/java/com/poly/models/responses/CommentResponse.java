@@ -12,5 +12,5 @@ public class CommentResponse {
     private String username;
     private String content;
     private LocalDate createDate;
-    private List<ReplyResponse> replies;
+    private List<ReplyResponse> replyResponses;
 }

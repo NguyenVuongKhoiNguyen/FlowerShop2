@@ -1,37 +1,16 @@
 package com.poly.models.services;
 
-import java.util.List;
+import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.poly.models.requests.CommentRequest;
+import com.poly.models.responses.CommentResponse;
+import com.poly.models.responses.PageResponse;
 
-import com.poly.models.entities.Comment;
-import com.poly.models.repositories.CommentRepository;
-
-@Service
-public class CommentService {
-	
-	@Autowired
-	private CommentRepository commentRepo;
-	
-	public Comment create(Comment co) {
-		return commentRepo.save(co);
-	}
-	
-	public void delete(Long id) {
-		commentRepo.deleteById(id);
-	}
-	
-	public Comment findById(Long id) {
-		return commentRepo.findById(id).orElse(null);
-	}
-	
-	public List<Comment> findByProduct(Integer id) {
-		return commentRepo.findByProduct_Id(id);
-	}
-	
-	public List<Comment> findByUsername(String username) {
-		return commentRepo.findByAccount_Username(username);
-	}
-	
+public interface CommentService {
+	CommentResponse create(CommentRequest request);
+	CommentResponse update(Long id, CommentRequest request);
+	void delete(Long id);
+	PageResponse<CommentResponse> filterComments(Integer productId, String username, LocalDate fromDate,
+			String sortOrder, LocalDate toDate, Integer pageNumber, Integer pageSize);
+	CommentResponse findById(Long id);
 }

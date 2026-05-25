@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name="Roles")
 public class Role {
@@ -27,6 +29,7 @@ public class Role {
 	private String name;
 	private String fullname;
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "role")
 	private List<AccountRole> accountRoles = new ArrayList<>();
 	

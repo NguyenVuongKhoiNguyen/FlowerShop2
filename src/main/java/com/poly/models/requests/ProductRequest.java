@@ -14,5 +14,6 @@ public class ProductRequest {
 	private Double retailPercentage;
 	private Boolean available;
 	private Integer amount;
+	private long sales;
 	private Integer categoryId;
 }

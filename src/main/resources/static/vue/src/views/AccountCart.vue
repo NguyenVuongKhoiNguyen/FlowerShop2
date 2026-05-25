@@ -73,12 +73,12 @@
 <script setup>
     import Order from '../models/Order'
     import { onMounted, ref } from "vue";
-    import { getCartsByUsername, getCartById, deleteCartById } from "../api/cartService";
-    import { createOrder } from "../api/orderService";
+    import { getCartsByUsername, getCartById, deleteCartById } from "../services/cartService";
+    import { createOrder } from "../services/orderService";
     import { useAuthStore } from "../stores/auth";
     import { useCartStore } from "../stores/cart";
     import { useRouter } from "vue-router";
-import { getAccountByUsername, getAllPaginatedAndFilteredAccounts } from '../api/accountService';
+import { getAccountByUsername, getAllPaginatedAndFilteredAccounts } from '../services/accountService';
  
     const auth = useAuthStore();
     const cartStore = useCartStore();

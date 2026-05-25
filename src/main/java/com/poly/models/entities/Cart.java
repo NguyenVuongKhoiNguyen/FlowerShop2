@@ -38,6 +38,8 @@ public class Cart {
     @Column(insertable = false, updatable = false)
 	private LocalDate createDate; 
 	
+    private String fullname;
+    
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private Account account;

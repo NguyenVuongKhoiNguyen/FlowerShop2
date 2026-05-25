@@ -5,6 +5,4 @@ import lombok.Data;
 @Data
 public class RoleRequest {
 	private Integer id;
-    private String name;
-    private String fullname;
 }

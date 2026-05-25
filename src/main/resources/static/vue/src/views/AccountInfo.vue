@@ -65,7 +65,7 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import { getAccountByUsername, updateNonAdminAccount } from '../api/accountService';
+import { getAccountByUsername, updateNonAdminAccount } from '../services/accountService';
 
 const auth = useAuthStore();
 const fileInput = ref(null);

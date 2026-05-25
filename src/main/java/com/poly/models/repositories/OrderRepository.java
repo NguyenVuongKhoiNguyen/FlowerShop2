@@ -1,8 +1,9 @@
 package com.poly.models.repositories;
 
 import java.time.LocalDate;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,24 +14,30 @@ import com.poly.models.entities.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	
-	// Call sp_GetOrdersByUserAndDate
-    @Query(value = "EXEC sp_GetOrdersByUserAndDate :username, :fullname, :fromDate, :toDate, :page, :pageSize", nativeQuery = true)
-    List<Order> filteredAndPaginated(
+	@Query(value = """
+        SELECT Id, Username, Fullname, Address, Phone, CreateDate, Total, Status
+        FROM Orders
+        WHERE
+            (:username IS NULL OR Username LIKE '%' + :username + '%')
+            AND (:fullname IS NULL OR Fullname LIKE '%' + :fullname + '%')
+            AND (:fromDate IS NULL OR CreateDate >= :fromDate)
+            AND (:toDate IS NULL OR CreateDate < DATEADD(DAY, 1, CAST(:toDate AS DATETIME)))
+        ORDER BY Id DESC
+        """,
+        countQuery = """
+        SELECT COUNT(*) FROM Orders
+        WHERE
+            (:username IS NULL OR Username LIKE '%' + :username + '%')
+            AND (:fullname IS NULL OR Fullname LIKE '%' + :fullname + '%')
+            AND (:fromDate IS NULL OR CreateDate >= :fromDate)
+            AND (:toDate IS NULL OR CreateDate < DATEADD(DAY, 1, CAST(:toDate AS DATETIME)))
+        """,
+        nativeQuery = true)
+    Page<Order> filterOrders(
             @Param("username") String username,
             @Param("fullname") String fullname,
             @Param("fromDate") LocalDate fromDate,
-            @Param("toDate") LocalDate toDate,
-            @Param("page") Integer page,
-            @Param("pageSize") Integer pageSize
+            @Param("toDate")   LocalDate toDate,
+            Pageable pageable
     );
-
-    // Call sp_CountFilteredOrders
-    @Query(value = "EXEC sp_CountFilteredOrders :username, :fullname, :fromDate, :toDate", nativeQuery = true)
-    int countFilteredOrders(
-            @Param("username") String username,
-            @Param("fullname") String fullname,
-            @Param("fromDate") LocalDate fromDate,
-            @Param("toDate") LocalDate toDate
-    );
-	
 }

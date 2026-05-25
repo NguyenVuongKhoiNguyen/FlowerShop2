@@ -82,8 +82,8 @@
 
 <script setup>
     import { ref, onMounted, watch } from "vue";
-    import { getAllPaginatedAndFilteredProducts, getTotalProductPages, getProductById } from "../api/productService";
-    import { getAllPaginatedAndFilteredCategories } from "../api/categoryService";
+    import { getAllPaginatedAndFilteredProducts, getTotalProductPages, getProductById } from "../services/productService";
+    import { getAllPaginatedAndFilteredCategories } from "../services/categoryService";
     import { useRouter } from 'vue-router';
     import { useCartStore } from "../stores/cart";
 
