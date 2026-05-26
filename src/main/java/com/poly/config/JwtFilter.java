@@ -35,10 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
         //Skip public endpoints
         if (path.startsWith("/images/") ||
         	path.startsWith("/login/") ||
-            path.startsWith("/products/") ||
-            path.startsWith("/categories/") || 
-            path.startsWith("/ws/")
-            ){
+            path.startsWith("/product/") ||
+            path.startsWith("/category/") || 
+            path.startsWith("/ws/")){
 
             chain.doFilter(request, response);
             return;
@@ -60,8 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 		.map(SimpleGrantedAuthority::new) //.map(r -> new SimpleGrantedAuthority(r))
                         .collect(Collectors.toList());
 
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(username, null, authorities);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

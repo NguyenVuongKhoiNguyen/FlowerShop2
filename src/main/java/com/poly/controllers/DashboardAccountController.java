@@ -55,10 +55,10 @@ public class DashboardAccountController {
 	
 	@GetMapping
 	public PageResponse<AccountResponse> filterAccounts(
-			@RequestParam(required = false) String username,
-			@RequestParam(required = false) String fullname,
-			@RequestParam(required = false) String email,
-			@RequestParam(required = false) Boolean activated,
+			@RequestParam(defaultValue = "") String username,
+			@RequestParam(defaultValue = "") String fullname,
+			@RequestParam(defaultValue = "") String email,
+			@RequestParam(defaultValue = "true") Boolean activated,
 			@RequestParam(defaultValue = "DESC") String sortOrder,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "5") Integer pageSize
@@ -71,9 +71,12 @@ public class DashboardAccountController {
 	public Map<String, PageResponse<AccountResponse>> preloadAccounts () {
 
 		Map<String, PageResponse<AccountResponse>> map = new LinkedHashMap<>();
+		
 		for (int i = 0; i < 5; i++) {
-			map.put(i + "", accountService.filterAndPaginateAccounts("", "", "", true, "DESC", i, 5));
+			String key = ""  + "_" + "" + "_"  + "" + "_" + "true" + "_" + "DESC" + "_" + i + "_" + "5";
+			map.put(key, accountService.filterAndPaginateAccounts(null, null, null, true, "DESC", i, 5));
 		}
+
 		return map;
 	}
 

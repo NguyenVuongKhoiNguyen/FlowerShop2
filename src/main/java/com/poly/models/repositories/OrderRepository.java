@@ -22,7 +22,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             AND (:fullname IS NULL OR Fullname LIKE '%' + :fullname + '%')
             AND (:fromDate IS NULL OR CreateDate >= :fromDate)
             AND (:toDate IS NULL OR CreateDate < DATEADD(DAY, 1, CAST(:toDate AS DATETIME)))
-        ORDER BY Id DESC
         """,
         countQuery = """
         SELECT COUNT(*) FROM Orders

@@ -17,8 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.poly.models.services.CustomUserDetailsService;
 
-//import com.poly.models.services.impl.CustomUserDetailsService;
-
 import lombok.RequiredArgsConstructor;
 
 @EnableWebSecurity
@@ -51,12 +49,12 @@ public class SecurityConfig {
 	        .csrf(csrf -> csrf.disable())
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	        .authenticationProvider(authenticationProvider())
-	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) //filter
 	        .authorizeHttpRequests(auth -> auth
-	        	.requestMatchers("/login/**", "/ws/**", "/images/**", "/products/**", "/categories/**", "/comments/**").permitAll()
-	            .requestMatchers("/dashboard/products/**", "/dashboard/categories/**", "/dashboard/accounts/**").hasRole("ADMIN")
-	            .requestMatchers("/dashboard/orders/**").hasRole("MANAGER")
-	            .requestMatchers("/carts/**", "/orders/**", "/accounts/**").hasRole("USER")
+	        	.requestMatchers("/login/**", "/ws/**", "/images/**", "/product/**", "/category/**", "/comment/**").permitAll()
+	            .requestMatchers("/dashboard/product/**", "/dashboard/category/**", "/dashboard/account/**").hasRole("ADMIN")
+	            .requestMatchers("/dashboard/order/**").hasRole("MANAGER")
+	            .requestMatchers("/carts/**", "/order/**", "/account/**").hasRole("USER")
 	            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	            .anyRequest().authenticated()
 	        );

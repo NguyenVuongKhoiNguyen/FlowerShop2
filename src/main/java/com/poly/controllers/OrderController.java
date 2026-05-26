@@ -36,8 +36,8 @@ public class OrderController {
 	}
 	
 	public PageResponse<OrderResponse> filterOrders(
-			@RequestParam(required = false) String username,
-            @RequestParam(required = false) String fullname,
+			@RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "") String fullname,
             @RequestParam(required = false) LocalDate fromDate,
             @RequestParam(required = false) LocalDate toDate,
             @DefaultValue(value = "DESC") String sortOrder,

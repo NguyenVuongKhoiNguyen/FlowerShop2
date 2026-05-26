@@ -14,7 +14,7 @@ import com.poly.models.entities.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 	
-	Optional<Account> findByEmail(String email); //Optional for or else throw
+	Optional<Account> findByEmail(String email); 
 		
 	@Query(value = """
         SELECT Username, Password, Fullname, Email, Photo, Address, Phone, CreateDate, Activated

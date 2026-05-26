@@ -46,13 +46,14 @@ export const useUserStore = defineStore("account", () => {
         })
 
         if (file) {
-            formData.append('photo', file)
+            formData.append('file', file)
         }
 
         api.post('/dashboard/account', formData)
             .then(res => {
                 Object.assign(account, res.data)
                 pages.clear()
+                preload()
                 getPage()
             })
             .catch(err => {
@@ -65,6 +66,7 @@ export const useUserStore = defineStore("account", () => {
         api.delete(`/dashboard/account/${username}`)
             .then(() => {
                 pages.clear()
+                preload()
                 getPage()
             })
             .catch(err => {
@@ -75,7 +77,13 @@ export const useUserStore = defineStore("account", () => {
 
     function getPage() {
 
-        const key = JSON.stringify(filter)
+        const key = filter.username + '_'
+                    filter.fullname + '_'
+                    filter.email + '_'
+                    filter.activated + '_'
+                    filter.sortOrder + '_'
+                    filter.pageNumber + '_'
+                    filter.pageSize + '_'
         
         const value = pages.has(key)
         if (value) {
@@ -85,7 +93,7 @@ export const useUserStore = defineStore("account", () => {
         }
 
         if (pages.size >= size) {
-            pages.delete(this.page.keys().next().value);
+            pages.delete(this.pages.keys().next().value);
         }
 
         api.get("/dashboard/account", { params: filter })
@@ -103,8 +111,7 @@ export const useUserStore = defineStore("account", () => {
         
         api.get("/dashboard/account/preload")
             .then(res => {
-                const data = res.json()
-                pages = new Map(Object.entries(data))
+                pages = new Map(Object.entries(res.data))
                 return res.data
             })
             .catch(err => {
@@ -113,14 +120,14 @@ export const useUserStore = defineStore("account", () => {
             })
     }
 
-    watch([() => filter.pageNumber, () => filter.pageSize], () => {
-        getPage()
-    })
+    watch(filter, () => { getPage() }, {deep: true})
 
     return {
         account,
         filter,
         save,
-        remove
+        remove,
+        getPage,
+        preload
     }
 })

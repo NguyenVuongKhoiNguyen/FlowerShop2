@@ -18,18 +18,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
         SELECT Id, Name, Image, CostPrice, RetailPercentage, CreateDate, Available, Amount, Sales, CategoryId
         FROM Products
         WHERE
-            (:minPrice IS NULL OR CostPrice >= :minPrice)
-            AND (:maxPrice IS NULL OR CostPrice <= :maxPrice)
-            AND (:categoryId IS NULL OR CategoryId = :categoryId)
+            (:minPrice IS NULL OR :minPrice = 0.0 OR CostPrice >= :minPrice)
+            AND (:maxPrice IS NULL OR :maxPrice = 0.0 OR CostPrice <= :maxPrice)
+            AND (:categoryId IS NULL OR :categoryId = 0 OR CategoryId = :categoryId)
             AND (:productName IS NULL OR Name LIKE '%' + :productName + '%')
             AND (:available IS NULL OR Available = :available)
         """,
         countQuery = """
         SELECT COUNT(*) FROM Products
         WHERE
-            (:minPrice IS NULL OR CostPrice >= :minPrice)
-            AND (:maxPrice IS NULL OR CostPrice <= :maxPrice)
-            AND (:categoryId IS NULL OR CategoryId = :categoryId)
+            (:minPrice IS NULL OR :minPrice = 0.0 OR CostPrice >= :minPrice)
+            AND (:maxPrice IS NULL OR :maxPrice = 0.0 OR CostPrice <= :maxPrice)
+            AND (:categoryId IS NULL OR :categoryId = 0 OR CategoryId = :categoryId)
             AND (:productName IS NULL OR Name LIKE '%' + :productName + '%')
             AND (:available IS NULL OR Available = :available)
         """,
