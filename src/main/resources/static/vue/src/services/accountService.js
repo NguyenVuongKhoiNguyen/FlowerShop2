@@ -86,6 +86,7 @@ export const useUserStore = defineStore("account", () => {
                     filter.pageSize + '_'
         
         const value = pages.has(key)
+        
         if (value) {
             pages.delete(key);
             pages.set(key, value);

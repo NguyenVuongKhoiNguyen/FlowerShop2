@@ -1,5 +1,8 @@
 package com.poly.controllers;
 
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +24,29 @@ public class CategoryController {
 	private final CategoryService categoryService;
 	
 	public PageResponse<CategoryResponse> filterCategories(
-			@RequestParam(required = false) String keyword,
+			@RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "DESC") String sortOrder,
             @RequestParam(defaultValue = "1") Integer pageNumber,
-            @RequestParam(defaultValue = "5") Integer pageSize
-			) {
+            @RequestParam(defaultValue = "5") Integer pageSize) {
+
 		return categoryService.filterAndPaginateCategories(keyword, sortOrder, pageNumber, pageSize);
 	}
 	
 	@GetMapping("/all")
 	public List<CategoryResponse> getAll() {
+
 		return categoryService.findAll();
+	}
+
+	@GetMapping("/preload")
+	public Map<String, PageResponse<CategoryResponse>> preload() {
+		
+		Map<String, PageResponse<CategoryResponse>> map = new LinkedHashMap<>();
+
+		// for (int i; i < 5; i++) {
+			
+		// }
+
+		return map;
 	}
 }

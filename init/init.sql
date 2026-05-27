@@ -15,12 +15,12 @@ GO
 
 CREATE TABLE Accounts (
     Username VARCHAR(50) PRIMARY KEY,
-    Password VARCHAR(255), -- null for google login --
+    Password VARCHAR(255), 
     Fullname NVARCHAR(50) NOT NULL,
     Email NVARCHAR(50) UNIQUE,
     Photo NVARCHAR(255),
-	Address NVARCHAR(100), -- null for google login --
-	Phone VARCHAR(20) , -- null for google login --
+	Address NVARCHAR(100), 
+	Phone VARCHAR(20) , 
 	CreateDate DATETIME DEFAULT GETDATE(),
     Activated BIT NOT NULL DEFAULT 1
 );
@@ -28,7 +28,7 @@ GO
 
 CREATE TABLE Roles (
 	Id INT IDENTITY PRIMARY KEY,
-	Name VARCHAR(50) NOT NULL UNIQUE, -- ROLE_USER ROLE_ADMIN --
+	Name VARCHAR(50) NOT NULL UNIQUE,
 	Fullname NVARCHAR(100) NOT NULL UNIQUE
 );
 GO
@@ -37,7 +37,7 @@ CREATE TABLE AccountRoles (
     Username VARCHAR(50) NOT NULL,
     RoleId INT NOT NULL,
 
-    CONSTRAINT PK_User_Role PRIMARY KEY (Username, RoleId), -- prevent one account has 2 identical roles --
+    CONSTRAINT PK_User_Role PRIMARY KEY (Username, RoleId),
 
     CONSTRAINT FK_UserRole_Account
         FOREIGN KEY (Username) REFERENCES Accounts(Username),
@@ -115,7 +115,7 @@ CREATE TABLE Items (
     SubTotal FLOAT NOT NULL,
     CONSTRAINT FK_Item_Cart
         FOREIGN KEY (CartId)
-        REFERENCES Carts(Id), -- items be deleted when cart is delete --
+        REFERENCES Carts(Id), 
 
     CONSTRAINT FK_Item_Product
         FOREIGN KEY (ProductId)
@@ -137,8 +137,8 @@ CREATE TABLE Discounts (
 );
 GO
 
-CREATE TABLE Comments ( -- Comment for product --
-    Id BIGINT IDENTITY(1,1) PRIMARY KEY, -- Long --
+CREATE TABLE Comments ( 
+    Id BIGINT IDENTITY(1,1) PRIMARY KEY,
     ProductId INT NOT NULL,
     Username VARCHAR(50) NOT NULL,
     Content NVARCHAR(MAX) NOT NULL,

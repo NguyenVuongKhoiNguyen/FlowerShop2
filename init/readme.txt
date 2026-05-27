@@ -10,3 +10,19 @@ erase container by docker compose down -v
 
 Create db:
 docker exec -it sqlserver-db /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "Nguyen@12345" -C -i /init/init.sql
+
+Test qwen: 
+
+    curl http://localhost:11434/api/chat -d "{
+    \"model\": \"qwen\",
+    \"messages\": [
+        {
+        \"role\": \"user\",
+        \"content\": \"Who im i?\"
+        }
+    ],
+    \"stream\": false
+    }"
+
+docker exec -it ollama ollama run qwen
+/bye for out of qwen
